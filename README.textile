@@ -1,7 +1,7 @@
-Firefox browser Extension for Shanbay
+h1. Firefox browser Extension for Shanbay
 
-TODO:
-	Insert "Enable" button
-	Complete "popup bubble" effect
-	Learn JS
-	More..
+h2. TODO:
+* Insert "Enable" button
+*	Complete "popup bubble" effect
+*	Learn JS
+*	More..

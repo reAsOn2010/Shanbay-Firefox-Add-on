@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://shanbayaddon/skin/toolbar-button.css" type="text/css"?>
+
+<overlay id="shanbayaddon-browser-overlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbarbutton id="shanbayaddon-toolbar-button" class="toolbarbutton-1"
+			type="menu-button"
+			label="扇贝" tooltiptext="扇贝查词" >
+			<menupopup>
+				<menuitem id="shanbay-switch" label="Enable Function"
+					type="checkbox" checked="true" /> 
+				<menuseparator />
+				<menuitem id="website" label="www.shanbay.com"
+					class="menuitem-iconic"
+					oncommand="MyExtension.website(event);" />
+			</menupopup>
+		</toolbarbutton>
+	</toolbarpalette>
+</overlay>

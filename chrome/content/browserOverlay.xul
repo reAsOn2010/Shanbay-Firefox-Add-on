@@ -11,7 +11,11 @@
 	<toolbarpalette id="BrowserToolbarPalette">
 
 		<toolbarbutton id="shanbayaddon-toolbar-button" class="toolbarbutton-1"
-			label="扇贝" tooltiptext="扇贝查词" type="menu-button"/>
+			label="扇贝" tooltiptext="扇贝查词" type="menu-button">
+			<menupopup>
+				<menuitem id="shanbay-checkbox" lable="Enable Function" type="checkbox" oncommand="something.js"/>
+			</menupopup>
+		</toolbarbutton>
 
 	</toolbarpalette>
 

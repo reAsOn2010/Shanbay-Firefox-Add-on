@@ -1,0 +1,4 @@
+content		shanbayaddon								chrome/content/
+skin			shanbayaddon	 classic/1.0	chrome/skin/
+locale		shanbayaddon	 zh-CN				chrome/locale/zh-CN/
+overlay		chrome://browser/content/browser.xul		chrome://shanbayaddon/content/browserOverlay.xul

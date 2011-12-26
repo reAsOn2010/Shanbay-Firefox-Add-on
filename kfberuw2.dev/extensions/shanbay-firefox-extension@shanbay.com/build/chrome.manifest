@@ -1,0 +1,4 @@
+content shanbayaddon jar:chrome/shanbayaddon.jar!/chrome/content/
+skin shanbayaddon classic/1.0 jar:chrome/shanbayaddon.jar!/chrome/skin/
+locale shanbayaddon zh-CN jar:chrome/shanbayaddon.jar!/chrome/locale/zh-CN/
+overlay		chrome://browser/content/browser.xul		chrome://shanbayaddon/content/browserOverlay.xul

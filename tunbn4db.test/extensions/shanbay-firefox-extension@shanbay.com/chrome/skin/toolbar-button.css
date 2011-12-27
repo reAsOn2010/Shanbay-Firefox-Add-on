@@ -1,8 +1,0 @@
-/* skin/toolbar-button.css */
-#shanbayaddon-toolbar-button{
-	list-style-image: url("chrome://shanbayaddon/skin/shanbay.png")
-}
-
-toolbar[iconsize="small"] #shanbayaddon-toolbar-button{
-	list-style-image: url("chrome://shanbayaddon/skin/shanbay_small.png")
-}

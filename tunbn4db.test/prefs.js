@@ -9,9 +9,9 @@
  * For more information, see http://www.mozilla.org/unix/customizing.html#prefs
  */
 
-user_pref("app.update.lastUpdateTime.addon-background-update-timer", 1324884696);
-user_pref("app.update.lastUpdateTime.blocklist-background-update-timer", 1324884696);
-user_pref("app.update.lastUpdateTime.search-engine-update-timer", 1324884696);
+user_pref("app.update.lastUpdateTime.addon-background-update-timer", 1324984790);
+user_pref("app.update.lastUpdateTime.blocklist-background-update-timer", 1324984910);
+user_pref("app.update.lastUpdateTime.search-engine-update-timer", 1324984670);
 user_pref("browser.bookmarks.restore_default_bookmarks", false);
 user_pref("browser.cache.disk.capacity", 1048576);
 user_pref("browser.cache.disk.smart_size.first_run", false);
@@ -21,17 +21,21 @@ user_pref("browser.places.smartBookmarksVersion", 2);
 user_pref("browser.rights.3.shown", true);
 user_pref("browser.startup.homepage_override.buildID", "20111222233349");
 user_pref("browser.startup.homepage_override.mstone", "rv:10.0");
+user_pref("browser.syncPromoViewsLeft", 3);
 user_pref("distribution.canonical.bookmarksProcessed", true);
-user_pref("extensions.blocklist.pingCountVersion", 0);
+user_pref("extensions.blocklist.pingCountTotal", 2);
+user_pref("extensions.blocklist.pingCountVersion", 2);
 user_pref("extensions.bootstrappedAddons", "{}");
 user_pref("extensions.databaseSchema", 11);
-user_pref("extensions.enabledAddons", "langpack-en-GB@firefox.mozilla.org:10.0,globalmenu@ubuntu.com:2.0.2,ubufox@ubuntu.com:1.0.2,langpack-en-ZA@firefox.mozilla.org:10.0,firebug@software.joehewitt.com:1.8.4,shanbay-firefox-extension@shanbay.com:0.1,{972ce4c6-7e08-4474-a285-3208198ce6fd}:10.0");
+user_pref("extensions.enabledAddons", "langpack-en-GB@firefox.mozilla.org:10.0,globalmenu@ubuntu.com:2.0.2,ubufox@ubuntu.com:1.0.2,langpack-en-ZA@firefox.mozilla.org:10.0,firebug@software.joehewitt.com:1.8.4,{f13b157f-b174-47e7-a34d-4815ddfdfeb8}:0.9.88.2,shanbay-firefox-extension@shanbay.com:0.1,{972ce4c6-7e08-4474-a285-3208198ce6fd}:10.0");
 user_pref("extensions.firebug.addonBarOpened", true);
 user_pref("extensions.firebug.currentVersion", "1.8.4");
+user_pref("extensions.firebug.defaultPanelName", "dom");
+user_pref("extensions.firebug.showDOMFuncs", true);
 user_pref("extensions.firebug.toolbarCustomizationDone", true);
 user_pref("extensions.firebug@software.joehewitt.com.install-event-fired", true);
 user_pref("extensions.globalmenu@ubuntu.com.install-event-fired", true);
-user_pref("extensions.installCache", "[{\"name\":\"app-global\",\"addons\":{\"langpack-en-GB@firefox.mozilla.org\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/langpack-en-GB@firefox.mozilla.org.xpi\",\"mtime\":1324606480000},\"globalmenu@ubuntu.com\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/globalmenu@ubuntu.com\",\"mtime\":1324878515000},\"ubufox@ubuntu.com\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/ubufox@ubuntu.com\",\"mtime\":1322580745000},\"{972ce4c6-7e08-4474-a285-3208198ce6fd}\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"mtime\":1324878516000},\"langpack-en-ZA@firefox.mozilla.org\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/langpack-en-ZA@firefox.mozilla.org.xpi\",\"mtime\":1324606481000},\"testpilot@labs.mozilla.com\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/testpilot@labs.mozilla.com.xpi\",\"mtime\":1324602712000}}},{\"name\":\"app-profile\",\"addons\":{\"firebug@software.joehewitt.com\":{\"descriptor\":\"/home/reason/Documents/Shanbay-Firefox-Add-on/tunbn4db.test/extensions/firebug@software.joehewitt.com.xpi\",\"mtime\":1324884575000},\"shanbay-firefox-extension@shanbay.com\":{\"descriptor\":\"/home/reason/Documents/Shanbay-Firefox-Add-on/tunbn4db.test/extensions/shanbay-firefox-extension@shanbay.com\",\"mtime\":1324906696000}}}]");
+user_pref("extensions.installCache", "[{\"name\":\"app-global\",\"addons\":{\"langpack-en-GB@firefox.mozilla.org\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/langpack-en-GB@firefox.mozilla.org.xpi\",\"mtime\":1324606480000},\"globalmenu@ubuntu.com\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/globalmenu@ubuntu.com\",\"mtime\":1324878515000},\"ubufox@ubuntu.com\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/ubufox@ubuntu.com\",\"mtime\":1322580745000},\"{972ce4c6-7e08-4474-a285-3208198ce6fd}\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\",\"mtime\":1324878516000},\"langpack-en-ZA@firefox.mozilla.org\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/langpack-en-ZA@firefox.mozilla.org.xpi\",\"mtime\":1324606481000},\"testpilot@labs.mozilla.com\":{\"descriptor\":\"/usr/lib/firefox-10.0/extensions/testpilot@labs.mozilla.com.xpi\",\"mtime\":1324602712000}}},{\"name\":\"app-profile\",\"addons\":{\"{f13b157f-b174-47e7-a34d-4815ddfdfeb8}\":{\"descriptor\":\"/home/reason/Documents/Shanbay-Firefox-Add-on/tunbn4db.test/extensions/{f13b157f-b174-47e7-a34d-4815ddfdfeb8}.xpi\",\"mtime\":1324988155000},\"firebug@software.joehewitt.com\":{\"descriptor\":\"/home/reason/Documents/Shanbay-Firefox-Add-on/tunbn4db.test/extensions/firebug@software.joehewitt.com.xpi\",\"mtime\":1324884575000},\"shanbay-firefox-extension@shanbay.com\":{\"descriptor\":\"/home/reason/Documents/Shanbay-Firefox-Add-on/tunbn4db.test/extensions/shanbay-firefox-extension@shanbay.com\",\"mtime\":1324992115000}}}]");
 user_pref("extensions.lastAppVersion", "10.0");
 user_pref("extensions.lastPlatformVersion", "10.0");
 user_pref("extensions.pendingOperations", false);
@@ -50,13 +54,13 @@ user_pref("gfx.blacklist.suggested-driver-version", "<Anything with EXT_texture_
 user_pref("gfx.blacklist.webgl.angle", 3);
 user_pref("gfx.blacklist.webgl.msaa", 3);
 user_pref("gfx.blacklist.webgl.opengl", 3);
-user_pref("idle.lastDailyNotification", 1324894267);
+user_pref("idle.lastDailyNotification", 1324985115);
 user_pref("intl.charsetmenu.browser.cache", "UTF-8");
 user_pref("network.cookie.prefsMigrated", true);
 user_pref("places.database.lastMaintenance", 1324894267);
 user_pref("places.history.expiration.transient_current_max_pages", 26092);
 user_pref("privacy.sanitize.migrateFx3Prefs", true);
-user_pref("storage.vacuum.last.index", 0);
+user_pref("storage.vacuum.last.index", 1);
 user_pref("storage.vacuum.last.places.sqlite", 1324894267);
 user_pref("urlclassifier.keyupdatetime.https://sb-ssl.google.com/safebrowsing/newkey", 1327476414);
 user_pref("xpinstall.whitelist.add", "");

@@ -1,7 +1,9 @@
-h1. Firefox browser Extension for Shanbay
+h1. Firefox Extension for Shanbay
 
 h2. TODO:
 * Insert "Enable" button
 *	Complete "popup bubble" effect
 *	Learn JS
 *	More..
+
+h2. 非常重要：第一次使用是需要将插件按钮从工具栏的订制当中拖出来 我会尽快把这个问题解决 带来的不便请谅解

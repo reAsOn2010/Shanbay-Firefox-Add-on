@@ -10,7 +10,7 @@ String.prototype.trim= function(){
 };
 
 function addPopup(){
-	var $box = $('<div id="shanbay-popup" ><p style="margin: 0px">Shanbay Extention</p></div>')
+	var $box = $('<div id="shanbay-popup" ><h2 class="popup-title">Shanbay Extention</p></div>')
 	$box.appendTo("body")				
 	$("#shanbay-popup").css({
 						"background": "rgb(240,240,240)",
@@ -18,25 +18,63 @@ function addPopup(){
 						"position": "absolute",
 						"top": "0px",
 						"left": "0px",
-						"width": "400px",
+						"width": "300px",
 						"display": "none",
-						"text-align": "center"
+						"text-align": "center",
+						"font-family": "Monospace"
 					});
-	var $input = $('<form name="input" action="" method="get">word:<input id="shanbay-search-box" type="text" name="word" /><input type="submit" value="search" /></form>');
-	var $req = $('<div id="shanbay-req" ><h1 id="shanbay-content" style="margin : 0px">content</h1><p id="shanbay-definition" style="margin : 0px">definition</p></div>');
+	$("h2.popup-title").css({
+						"color": "#CC0099",
+						"font-size": "200%",
+						"margin": "0px"
+	});
+	var $input = $('<form id="shanbay-form" action="" >word:<input size="10" id="shanbay-search-box" type="text" name="word" /><input type="submit" value="submit" /></form>');
+	var $req = $('<div id="shanbay-req" ><h3 id="shanbay-content">content</h1><p id="shanbay-definition" id="shanbay-definition">definition</p></div>');
 	$input.appendTo("#shanbay-popup");
 	$req.appendTo("#shanbay-popup");
+	$("#shanbay-content").css({
+						"color": "#CC0099",
+						"font-size": "150%",
+						"margin": "0px"
+	});
+	$("#shanbay-definition").css({
+						"font-size": "100%",
+						"margin": "0px"
+	});
 };
 
 function change(data){
 	var content = document.getElementById("shanbay-content");
 	var definition = document.getElementById("shanbay-definition");
 	var en_definition = document.getElementById("shanbay-en_definition");
+	//TODO
 	content.innerHTML = data.voc.content;
 	definition.innerHTML = data.voc.definition;
 	//en_definition.innerHTML = data.voc.en_definition; 
 }
 
+function notfound(){
+	var content = document.getElementById("shanbay-content");
+	var definition = document.getElementById("shanbay-definition");
+	var en_definition = document.getElementById("shanbay-en_definition");
+	content.innerHTML = "Word not found!"
+	definition.innerHTML = "No definition."
+}
+
+function jsonp_get(text){
+	$.ajax({
+		url:"http://www.shanbay.com/api/word/" + text,
+		dataType:"jsonp", 
+		success:function(data){console.log(data);
+			if(data.voc != false){
+				change(data);
+			}
+			else{
+				notfound();
+			}
+		}
+	})
+}
 
 $(document).ready(function ()
 	{
@@ -46,12 +84,14 @@ $(document).ready(function ()
 					addPopup();
 				}
 				var popup = document.getElementById("shanbay-popup");
-				if(popup.style.display == "none" || window.getSelection() != ""){
+				if(popup.style.display == "none" && window.getSelection() != ""){
+					//alert(popup.style.display);
+					//alert(window.getSelection());
 					var text = new String("");
 					if(window.getSelection){
 						var selection = window.getSelection();
 						text = selection.toString();
-						text = text.trim();
+						text = text.trim().toLowerCase();
 					}
 					if(text != ""){
 						$("#shanbay-popup").css({
@@ -59,24 +99,25 @@ $(document).ready(function ()
 							left: event.pageX
 						});
 						$("#shanbay-search-box").val(text);
-						$("#shanbay-popup").fadeTo("fast",0.8);
-						$.ajax({
-							url:"http://www.shanbay.com/api/word/" + text,
-							dataType:"jsonp", 
-							success:function(data){console.log(data);
-								if(data.learning_id != 0){
-									change(data);
-									/*TODO*/
-								}	
-							}
-						})
+						$("#shanbay-popup").fadeTo("fast",1);
+						//$("#shanbay-popup").show();
+						jsonp_get(text);
 					}
 				}
 				else if ($(event.target).parents("#shanbay-popup").attr("id")){
-					/*TODO*/
+					//alert($(event.target).parents("#shanbay-popup").attr("id"));
+					//alert($(event.target));
+					$("#shanbay-form").submit(function(){
+						//console.log($("#shanbay-form").serialize());
+						var str = $("#shanbay-form").serialize().slice(5);
+						console.log(str);
+						jsonp_get(str);
+						return false;
+					});
 				}
 				else{
-					$("#shanbay-popup").fadeOut("fast")
+					$("#shanbay-popup").fadeOut("fast");
 				}
+			//$("#shanbay-form").unbind("submit");//TODO
 			})
 		});

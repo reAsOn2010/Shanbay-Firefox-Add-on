@@ -26,7 +26,8 @@ function addPopup(){
 						"width": "300px",
 						"display": "none",
 						"text-align": "center",
-						"font-family": "sans-serif"
+						"font-family": "sans-serif",
+						"z-index": "1000"
 	});
 	//$("#popup-title").css({
 	//					"color": "#CC0099",
@@ -35,25 +36,25 @@ function addPopup(){
 	//					"padding": "10px"
 	//});
 	$("#shanbay-form").css({
-						"font-size": "100%",
+						"font-size": "14px",
 						"margin": "0px"
 	});				
 	$("#shanbay-content").css({
 						"color": "#CC0099",
-						"font-size": "100%",
+						"font-size": "14px",
 						"margin": "0px",
-						"padding": "5px"
+						"padding": "2px"
 	});
 	$("#shanbay-definition").css({
-						"font-size": "80%",
+						"font-size": "14px",
 						"margin": "0px",
-						"padding": "5px",
+						"padding": "2px",
 						"text-align": "left"
 	});
 	$("#shanbay-en-definitions").css({
-						"font-size": "80%",
+						"font-size": "14px",
 						"margin": "0px",
-						"padding": "5px",
+						"padding": "2px",
 						"text-align": "left"
 	});
 };
@@ -70,7 +71,7 @@ function change(data){
 		$new_speech = $('<div id="' + speech_id + '">' + speech + ":</div>");
 		$new_speech.appendTo("#shanbay-en-definitions");
 		$.each(definitions, function(i, def){
-			$new_en_def = $('<div>' + (i+1) + '. ' + def + '</div>');
+			$new_en_def = $('<div style="padding-left:10px">' + (i+1) + '. ' + def + '</div>');
 			$new_en_def.appendTo($("#"+speech_id));
 		});
 	});

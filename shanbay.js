@@ -10,8 +10,13 @@ String.prototype.trim= function(){
 };
 
 function addPopup(){
-	var $box = $('<div id="shanbay-popup" ><h2 class="popup-title">Shanbay Extention</p></div>')
+	var $box = $('<div id="shanbay-popup" ><img src="http://www.shanbay.com/img/logo.gif"/></div>')
+	
+	var $input = $('<form id="shanbay-form" action="" >word:<input size="10" id="shanbay-search-box" type="text" name="word" /><input type="submit" value="search" /></form>');
+	var $req = $('<div id="shanbay-req" ><p id="shanbay-content">Please Login First</p><p id="shanbay-definition" id="shanbay-definition"></p></div>');
 	$box.appendTo("body")				
+	$input.appendTo("#shanbay-popup");
+	$req.appendTo("#shanbay-popup");
 	$("#shanbay-popup").css({
 						"background": "rgb(240,240,240)",
 						"border": "1px solid rgb(0,0,0)",
@@ -22,24 +27,27 @@ function addPopup(){
 						"display": "none",
 						"text-align": "center",
 						"font-family": "Monospace"
-					});
-	$("h2.popup-title").css({
+	});
+	$("#popup-title").css({
 						"color": "#CC0099",
 						"font-size": "200%",
-						"margin": "0px"
+						"margin": "0px",
+						"padding": "10px"
 	});
-	var $input = $('<form id="shanbay-form" action="" >word:<input size="10" id="shanbay-search-box" type="text" name="word" /><input type="submit" value="submit" /></form>');
-	var $req = $('<div id="shanbay-req" ><h3 id="shanbay-content">content</h1><p id="shanbay-definition" id="shanbay-definition">definition</p></div>');
-	$input.appendTo("#shanbay-popup");
-	$req.appendTo("#shanbay-popup");
+	$("#shanbay-form").css({
+						"font-size": "125%",
+						"margin": "0px"
+	});				
 	$("#shanbay-content").css({
 						"color": "#CC0099",
 						"font-size": "150%",
-						"margin": "0px"
+						"margin": "0px",
+						"padding": "10px"
 	});
 	$("#shanbay-definition").css({
-						"font-size": "100%",
-						"margin": "0px"
+						"font-size": "125%",
+						"margin": "0px",
+						"padding": "5px"
 	});
 };
 
@@ -72,52 +80,55 @@ function jsonp_get(text){
 			else{
 				notfound();
 			}
-		}
+		},
+		//error:function
 	})
+}
+
+function get_text(){
+	var text = new String("");
+	if(window.getSelection()){
+		var selection = window.getSelection();
+		text = selection.toString().trim().toLowerCase();
+	}
+	return text;
 }
 
 $(document).ready(function ()
 	{
+			var old_text = new String("");
+
 			$(document).mouseup(function(event){
 				event.stopPropagation();
 				if(document.getElementById("shanbay-popup") == null){
 					addPopup();
 				}
 				var popup = document.getElementById("shanbay-popup");
-				if(popup.style.display == "none" && window.getSelection() != ""){
-					//alert(popup.style.display);
-					//alert(window.getSelection());
-					var text = new String("");
-					if(window.getSelection){
-						var selection = window.getSelection();
-						text = selection.toString();
-						text = text.trim().toLowerCase();
-					}
-					if(text != ""){
+				var new_text = get_text();
+				if(popup.style.display == "none" || (new_text != old_text && new_text != "")){
+					old_text = new_text;
+					if(new_text != ""){
 						$("#shanbay-popup").css({
 							top: event.pageY + 15,
 							left: event.pageX
 						});
-						$("#shanbay-search-box").val(text);
+						$("#shanbay-search-box").val(new_text);
 						$("#shanbay-popup").fadeTo("fast",1);
-						//$("#shanbay-popup").show();
-						jsonp_get(text);
+						jsonp_get(new_text);
 					}
 				}
 				else if ($(event.target).parents("#shanbay-popup").attr("id")){
-					//alert($(event.target).parents("#shanbay-popup").attr("id"));
-					//alert($(event.target));
-					$("#shanbay-form").submit(function(){
-						//console.log($("#shanbay-form").serialize());
+					old_text = new_text;
+					$("#shanbay-form").unbind("submit").submit(function(){
 						var str = $("#shanbay-form").serialize().slice(5);
-						console.log(str);
+						//console.log(str);
 						jsonp_get(str);
 						return false;
 					});
 				}
 				else{
+					old_text = new_text;
 					$("#shanbay-popup").fadeOut("fast");
 				}
-			//$("#shanbay-form").unbind("submit");//TODO
 			})
 		});

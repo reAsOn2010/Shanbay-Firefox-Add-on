@@ -13,8 +13,8 @@ function addPopup(){
 	var $box = $('<div id="shanbay-popup" ><img src="http://www.shanbay.com/img/logo.gif"/></div>')
 	
 	var $input = $('<form id="shanbay-form" action="" >word:<input size="10" id="shanbay-search-box" type="text" name="word" /><input type="submit" value="search" /></form>');
-	var $req = $('<div id="shanbay-req" ><p id="shanbay-content">Please Login First</p><p id="shanbay-definition" id="shanbay-definition"></p></div>');
-	$box.appendTo("body")				
+	var $req = $('<div id="shanbay-req" ><div id="shanbay-content">Please Login First</div><div id="shanbay-definition"></div><div id="shanbay-en-definitions">something</div></div>');
+	$box.appendTo("body");
 	$input.appendTo("#shanbay-popup");
 	$req.appendTo("#shanbay-popup");
 	$("#shanbay-popup").css({
@@ -26,47 +26,61 @@ function addPopup(){
 						"width": "300px",
 						"display": "none",
 						"text-align": "center",
-						"font-family": "Monospace"
+						"font-family": "sans-serif"
 	});
-	$("#popup-title").css({
-						"color": "#CC0099",
-						"font-size": "200%",
-						"margin": "0px",
-						"padding": "10px"
-	});
+	//$("#popup-title").css({
+	//					"color": "#CC0099",
+	//					"font-size": "200%",
+	//					"margin": "0px",
+	//					"padding": "10px"
+	//});
 	$("#shanbay-form").css({
-						"font-size": "125%",
+						"font-size": "100%",
 						"margin": "0px"
 	});				
 	$("#shanbay-content").css({
 						"color": "#CC0099",
-						"font-size": "150%",
-						"margin": "0px",
-						"padding": "10px"
-	});
-	$("#shanbay-definition").css({
-						"font-size": "125%",
+						"font-size": "100%",
 						"margin": "0px",
 						"padding": "5px"
+	});
+	$("#shanbay-definition").css({
+						"font-size": "80%",
+						"margin": "0px",
+						"padding": "5px",
+						"text-align": "left"
+	});
+	$("#shanbay-en-definitions").css({
+						"font-size": "80%",
+						"margin": "0px",
+						"padding": "5px",
+						"text-align": "left"
 	});
 };
 
 function change(data){
-	var content = document.getElementById("shanbay-content");
-	var definition = document.getElementById("shanbay-definition");
-	var en_definition = document.getElementById("shanbay-en_definition");
-	//TODO
-	content.innerHTML = data.voc.content;
-	definition.innerHTML = data.voc.definition;
-	//en_definition.innerHTML = data.voc.en_definition; 
+	var en_def = data.voc.en_definitions;
+	var $new_speech;
+	var $new_en_def;
+	$("#shanbay-content").html(data.voc.content);
+	$("#shanbay-definition").html(data.voc.definition);
+	$("#shanbay-en-definitions").html("");
+	$.each(en_def, function(speech, definitions){
+		var speech_id = "shanbay-speech-" + speech;
+		$new_speech = $('<div id="' + speech_id + '">' + speech + ":</div>");
+		$new_speech.appendTo("#shanbay-en-definitions");
+		$.each(definitions, function(i, def){
+			$new_en_def = $('<div>' + (i+1) + '. ' + def + '</div>');
+			$new_en_def.appendTo($("#"+speech_id));
+		});
+	});
+	//	console.log(speech + ' ' + definitions);
 }
 
 function notfound(){
-	var content = document.getElementById("shanbay-content");
-	var definition = document.getElementById("shanbay-definition");
-	var en_definition = document.getElementById("shanbay-en_definition");
-	content.innerHTML = "Word not found!"
-	definition.innerHTML = "No definition."
+	$("#shanbay-content").html("word not found!");
+	$("#shanbay-definition").html("");
+	$("#shanbay-en-definitions").html("");
 }
 
 function jsonp_get(text){

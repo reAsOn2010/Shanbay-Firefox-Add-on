@@ -15,19 +15,21 @@ String.prototype.trim= function(){
 function add_popup(){
     var $box = $('<div id="shanbay-popup" ></div>');
     var $input = $('<form id="shanbay-form" action="" >word:<input size="10" id="shanbay-search-box" type="text" name="word" /><input type="submit" value="search" /></form>');
-    var $req = $('<div id="shanbay-req" ><div id="shanbay-content">Please Login First</div><div id="shanbay-definition"></div><div id="shanbay-en-definitions">something</div></div>');
+    var $req = $('<div id="shanbay-req" ><div id="shanbay-menu"><div id="shanbay-content">Please Login First</div></div><div id="shanbay-definition"></div><div id="shanbay-en-definitions">something</div></div>');
     var $root = $('<p id="shanbay-support">Shanbay Supported</p>');
+    var $add_word_button = $('<button class="shanbay-button" id="shanbay-add-word" type="button">add word</button>');
     $box.appendTo("body");
     $input.appendTo("#shanbay-popup");
     $req.appendTo("#shanbay-popup");
     $root.appendTo("#shanbay-popup");
+    $add_word_button.appendTo("#shanbay-menu");
     $("#shanbay-popup").css({
         "background": "rgb(240,240,240)",
         "border": "1px solid rgb(0,0,0)",
         "position": "absolute",
         "top": "0px",
         "left": "0px",
-        "width": "250px",
+        "width": "300px",
         "display": "none",
         "text-align": "left",
         "font-family": "sans-serif",
@@ -35,23 +37,33 @@ function add_popup(){
         "border": "2px solid #CCC"
     });
     $("#shanbay-form").css({
+        "width":"300px",
         "font-size": "14px",
         "margin": "0px",
         "padding": "2px"
     });
+    $("#shanbay-menu").css({
+        "float":"left",
+        "width":"300px"
+    });
     $("#shanbay-content").css({
+        "float": "left",
         "color": "#CC0099",
-        "font-size": "14px",
+        "font-size": "18px",
         "margin": "0px",
         "padding": "2px"
     });
     $("#shanbay-definition").css({
+        "width":"300px",
+        "float": "left",
         "font-size": "14px",
         "margin": "0px",
         "padding": "2px",
         "text-align": "left"
     });
     $("#shanbay-en-definitions").css({
+        "width":"300px",
+        "float": "left",
         "font-size": "14px",
         "margin": "0px",
         "padding": "2px",
@@ -63,6 +75,10 @@ function add_popup(){
         "margin": "0px",
         "color": "gray"
     });
+    $(".shanbay-button").css({
+        "float": "right",
+        "margin-left" : "5px"
+    });
 };
 
 // change content and definitions
@@ -73,6 +89,8 @@ function change(data){
     $("#shanbay-content").html(data.voc.content);
     $("#shanbay-definition").html(data.voc.definition);
     $("#shanbay-en-definitions").html("");// clear <div id="shanbay-en-definitions"> before append
+    $("#shanbay-add-word").html("add");
+    //console.log($add_word_button);
     $.each(en_def, function(speech, definitions){
         var speech_id = "shanbay-speech-" + speech;
         $new_speech = $('<div id="' + speech_id + '">' + speech + ":</div>");
@@ -85,27 +103,45 @@ function change(data){
 }
 
 function not_found(){
-    $("#shanbay-content").html("word not found!");
+    $("#shanbay-content").html("not found!");
     $("#shanbay-definition").html("");
     $("#shanbay-en-definitions").html("");
 }
 
-function jsonp_get(text){
-    $.ajax({
-        url:"http://www.shanbay.com/api/word/" + text,
-        dataType:"jsonp",
-        success:function(data){
-            //console.log(data);
-            if(data.voc != false){
-                change(data);
+function jsonp_get(operation, text){
+    if(operation == "search"){
+        $.ajax({
+            url:"http://www.shanbay.com/api/word/" + text,
+            dataType:"jsonp",
+            success:function(data){
+                //console.log(data);
+                if(data.voc != false){
+                    change(data);
+                }
+                else{
+                    not_found();
+                }
+            },
+            //TODO
+            //error:function 
+        });
+    }
+    else if(operation == "add"){
+        $.ajax({
+            url:"http://www.shanbay.com/api/learning/add/" + text,
+            dataType:"jsonp",
+            success:function(data){
+                console.log(data);
+                console.log(data.id);
+                if(data.id != 0){
+                    $("#shanbay-add-word").html("succeed");
+                }
+                else{
+                    $("#shanbay-add-word").html("fail");
+                }
             }
-            else{
-                not_found();
-            }
-        },
-        //TODO
-        //error:function 
-    })
+        });
+    }
 }
 
 // this function only works on firefox
@@ -121,7 +157,7 @@ function get_text(){
 
 $(document).ready(function(){
     var old_text = new String(""); //record last selected text
-
+    var now_text = new String(""); //record text now
     $(document).mouseup(function(event){
         event.stopPropagation();
         // if it's the first select, add popup HTML
@@ -135,6 +171,7 @@ $(document).ready(function(){
         //            2.select something different from the formmer time.
         if(popup.style.display == "none" || (new_text != old_text && new_text != "")){
             old_text = new_text;
+            now_text = new_text;
             // change popup's position
             if(new_text != ""){
                 $("#shanbay-popup").css({
@@ -143,7 +180,7 @@ $(document).ready(function(){
                 });
             $("#shanbay-search-box").val(new_text);
             $("#shanbay-popup").fadeTo("fast",1);
-            jsonp_get(new_text);
+            jsonp_get("search",new_text);
             }
         }
         // condition: click on the popup window
@@ -151,9 +188,14 @@ $(document).ready(function(){
             old_text = new_text;
             $("#shanbay-form").unbind("submit").submit(function(){
                 var str = $("#shanbay-form").serialize().slice(5); // maybe can use better way
+                now_text = str;
                 //console.log(str);
-                jsonp_get(str);
+                jsonp_get("search",str);
                 return false;
+            });
+            $("#shanbay-add-word").unbind("click").click(function(){
+                console.log("clicked");
+                jsonp_get("add",now_text);
             });
         }
         // condition: click outside the popup window

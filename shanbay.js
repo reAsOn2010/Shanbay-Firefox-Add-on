@@ -14,15 +14,17 @@ String.prototype.trim= function(){
 
 function add_popup(){
     var $box = $('<div id="shanbay-popup" ></div>');
-    var $input = $('<form id="shanbay-form" action="" >word:<input size="10" id="shanbay-search-box" type="text" name="word" /><input type="submit" value="search" /></form>');
+    var $input = $('<form id="shanbay-form" action="" >word:<input size="10" id="shanbay-search-box" type="text" name="word" /><input type="submit" value="\u67e5\u8bcd" /></form>');
     var $req = $('<div id="shanbay-req" ><div id="shanbay-menu"><div id="shanbay-content">Please Login First</div></div><div id="shanbay-definition"></div><div id="shanbay-en-definitions">something</div></div>');
-    var $root = $('<p id="shanbay-support">Shanbay Supported</p>');
-    var $add_word_button = $('<button class="shanbay-button" id="shanbay-add-word" type="button">add word</button>');
+    var $root = $('<p id="shanbay-support">\u6247\u8d1d\u7f51\u652f\u6301</p>');
+    var $add_word_button = $('<button class="shanbay-button" id="shanbay-add-word" type="button">\u6dfb\u52a0</button>');
+    var $show_en_def = $('<button class="shanbay-button" id="shanbay-show-en" type="button">\u82f1\u6587\u91ca\u4e49</button>');
     $box.appendTo("body");
     $input.appendTo("#shanbay-popup");
     $req.appendTo("#shanbay-popup");
     $root.appendTo("#shanbay-popup");
     $add_word_button.appendTo("#shanbay-menu");
+    $show_en_def.appendTo("#shanbay-menu");
     $("#shanbay-popup").css({
         "background": "rgb(240,240,240)",
         "border": "1px solid rgb(0,0,0)",
@@ -62,6 +64,7 @@ function add_popup(){
         "text-align": "left"
     });
     $("#shanbay-en-definitions").css({
+        "display":"none",
         "width":"300px",
         "float": "left",
         "font-size": "14px",
@@ -89,7 +92,8 @@ function change(data){
     $("#shanbay-content").html(data.voc.content);
     $("#shanbay-definition").html(data.voc.definition);
     $("#shanbay-en-definitions").html("");// clear <div id="shanbay-en-definitions"> before append
-    $("#shanbay-add-word").html("add");
+    $("#shanbay-add-word").html("\u6dfb\u52a0");
+    $("#shanbay-en-definitions").css("display","none");
     //console.log($add_word_button);
     $.each(en_def, function(speech, definitions){
         var speech_id = "shanbay-speech-" + speech;
@@ -134,10 +138,10 @@ function jsonp_get(operation, text){
                 console.log(data);
                 console.log(data.id);
                 if(data.id != 0){
-                    $("#shanbay-add-word").html("succeed");
+                    $("#shanbay-add-word").html("\u6210\u529f");
                 }
                 else{
-                    $("#shanbay-add-word").html("fail");
+                    $("#shanbay-add-word").html("\u5931\u8d25");
                 }
             }
         });
@@ -196,6 +200,9 @@ $(document).ready(function(){
             $("#shanbay-add-word").unbind("click").click(function(){
                 console.log("clicked");
                 jsonp_get("add",now_text);
+            });
+            $("#shanbay-show-en").unbind("click").click(function(){
+                $("#shanbay-en-definitions").css("display","block");
             });
         }
         // condition: click outside the popup window

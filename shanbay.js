@@ -20,6 +20,8 @@ function add_popup(){
     var $add_word_button = $('<button class="shanbay-button" id="shanbay-add-word" type="button">\u6dfb\u52a0</button>');
     var $show_en_def = $('<button class="shanbay-button" id="shanbay-show-en" type="button">\u82f1\u6587\u91ca\u4e49</button>');
     var $show_example = $('<button class="shanbay-button" id="shanbay-show-example" type="button">\u4f8b\u53e5</button>');
+    var $example_area = $('<div id="example_area"></div>');
+    var $go_back = $('<button class="shanbay-button" id="shanbay-go-back" type="button">\u8fd4\u56de</button>');
     $box.appendTo("body");
     $input.appendTo("#shanbay-popup");
     $req.appendTo("#shanbay-popup");
@@ -27,6 +29,8 @@ function add_popup(){
     $add_word_button.appendTo("#shanbay-menu");
     $show_en_def.appendTo("#shanbay-menu");
     $show_example.appendTo("#shanbay-menu");
+    $example_area.appendTo("#shanbay-popup");
+    $go_back.appendTo("#example_area");
     $("#shanbay-popup").css({
         "background": "rgb(240,240,240)",
         "border": "1px solid rgb(0,0,0)",
@@ -97,9 +101,11 @@ function change(data){
     var en_def = data.voc.en_definitions;
     var $new_speech;
     var $new_en_def;
+    $("#shanbay-popup").children().css("display","block");
     $("#shanbay-content").html(data.voc.content);
     $("#shanbay-definition").html(data.voc.definition);
     $("#shanbay-en-definitions").html("");// clear <div id="shanbay-en-definitions"> before append
+    $("#example_area").css("display","none");
     if(data.learning_id != 0){
         $("#shanbay-add-word").html("\u5df2\u6dfb\u52a0");
     }else{
@@ -119,12 +125,15 @@ function change(data){
 }
 
 function not_found(){
+    $("#shanbay-popup").children().css("display","block");
+    $("#example_area").css("display","none");
     $("#shanbay-content").html("not found!");
     $("#shanbay-definition").html("");
     $("#shanbay-en-definitions").html("");
 }
 
 function jsonp_get(operation, text){
+    var learning_id;
     if(operation == "search"){
         $.ajax({
             url:"http://www.shanbay.com/api/word/" + text,
@@ -132,7 +141,8 @@ function jsonp_get(operation, text){
             success:function(data){
                 if(data.voc != false){
                     change(data);
-                    //console.log(data);
+                    learning_id = data.learning_id;
+                    console.log(data);
                 }
                 else{
                     not_found();
@@ -147,10 +157,11 @@ function jsonp_get(operation, text){
             url:"http://www.shanbay.com/api/learning/add/" + text,
             dataType:"jsonp",
             success:function(data){
-                //console.log(data);
-                //console.log(data.id);
+                console.log(data);
+                console.log(data.id);
                 if(data.id != 0){
                     $("#shanbay-add-word").html("\u5df2\u6dfb\u52a0");
+                    learning_id = data.id;
                 }
                 else{
                     $("#shanbay-add-word").html("\u5931\u8d25");
@@ -158,6 +169,12 @@ function jsonp_get(operation, text){
             }
         });
     }
+    else if(operation == "show_example"){
+        $("#shanbay-popup").children().css("display","none");
+        $("#example_area").css("display","block");
+    //TODO
+    }
+
 }
 
 // this function only works on firefox
@@ -210,11 +227,14 @@ $(document).ready(function(){
                 return false;
             });
             $("#shanbay-add-word").unbind("click").click(function(){
-                console.log("clicked");
+                //console.log("clicked");
                 jsonp_get("add",now_text);
             });
             $("#shanbay-show-en").unbind("click").click(function(){
                 $("#shanbay-en-definitions").css("display","block");
+            });
+            $("#shanbay-show-example").unbind("click").click(function(){
+                jsonp_get("show_example", now_text);
             });
         }
         // condition: click outside the popup window

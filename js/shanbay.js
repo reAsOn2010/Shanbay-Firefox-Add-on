@@ -13,96 +13,91 @@ String.prototype.trim= function(){
 };
 
 //--------------------------------------------
+// static string values
+//--------------------------------------------
+
+var ShanbayStatics = {
+    "notLogin": "\u8BF7\u5148\u767B\u9646\u6247\u8D1D\u7F51",
+    "added": "\u5df2\u6dfb\u52a0",
+    "addFail": "\u6DFB\u52A0\u5931\u8d25",
+    "add": "\u6DFB\u52A0",
+    "showEn": "\u82f1\u6587\u91ca\u4e49",
+    "showExample": "\u4f8b\u53e5",
+    "goBack": "\u8fd4\u56de",
+    "addExample": "\u6DFB\u52A0\u4F8B\u53E5",
+    "foot": "\u6247\u8d1d\u7f51\u652f\u6301"
+};
+//--------------------------------------------
 // add elements
 //--------------------------------------------
 function add_popup(){
-    var $box = $('<div id="shanbay-popup" ></div>');
-    var $input = $('<form id="shanbay-form" action="" >word:<input size="10" id="shanbay-search-box" type="text" name="word" /><input class="shanbay-input" type="submit" value="\u67e5\u8bcd" /></form>');
-    var $req = $('<div id="shanbay-req" ><div id="shanbay-menu"><div id="shanbay-content">Please Login First</div></div><div id="shanbay-definition"></div><div id="shanbay-en-definitions">something</div></div>');
-    var $foot = $('<p id="shanbay-support">\u6247\u8d1d\u7f51\u652f\u6301</p>');
-    var $add_word_button = $('<button class="shanbay-button" id="shanbay-add-word" type="button">\u6dfb\u52a0</button>');
-    var $show_en_def = $('<button class="shanbay-button" id="shanbay-show-en" type="button">\u82f1\u6587\u91ca\u4e49</button>');
-    var $show_example = $('<button class="shanbay-button" id="shanbay-show-example" type="button">\u4f8b\u53e5</button>');
-    var $examples = $('<div id="shanbay-example"></div>');
-    var $examples_area = $('<div id="examples-area"></div>');
-    var $go_back = $('<button class="shanbay-button" id="shanbay-go-back" type="button">\u8fd4\u56de</button>');
-    $box.appendTo("body");
-    $input.appendTo("#shanbay-popup");
-    $req.appendTo("#shanbay-popup");
-    $examples.appendTo("#shanbay-popup");
-    $foot.appendTo("#shanbay-popup");
-    $add_word_button.appendTo("#shanbay-menu");
-    $show_en_def.appendTo("#shanbay-menu");
-    $show_example.appendTo("#shanbay-menu");
-    $examples_area.appendTo("#shanbay-example");
-    $go_back.appendTo("#shanbay-example");
-    $("#shanbay-popup").css({
-        "background": "rgb(240,240,240)",
-        "border": "1px solid rgb(0,0,0)",
-        "position": "absolute",
-        "top": "0px",
-        "left": "0px",
-        "width": "300px",
-        "display": "none",
-        "text-align": "left",
-        "font-family": "sans-serif",
-        "z-index": "1000",
-        "border": "2px solid #CCC"
-    });
-    $("#shanbay-form").css({
-        "width":"300px",
-        "font-size": "14px",
-        "margin": "0px",
-        "padding": "2px"
-    });
-    $("#shanbay-menu").css({
-        "float":"left",
-        "width":"300px"
-    });
-    $("#shanbay-content").css({
-        "float": "left",
-        "color": "#CC0099",
-        "font-size": "18px",
-        "margin": "0px",
-        "padding": "2px"
-    });
-    $("#shanbay-definition").css({
-        "width":"300px",
-        "float": "left",
-        "font-size": "14px",
-        "margin": "0px",
-        "padding": "2px",
-        "text-align": "left"
-    });
-    $("#shanbay-en-definitions").css({
-        "display":"none",
-        "width":"300px",
-        "float": "left",
-        "font-size": "14px",
-        "margin": "0px",
-        "padding": "2px",
-        "text-align": "left"
-    });
-    $("#shanbay-support").css({
-        "font-size": "10px",
-        "text-align": "right",
-        "margin": "0px",
-        "color": "gray"
-    });
-    $(".shanbay-input").css({
-        "background-color": "#209E85",
-        "color": "white"
-    });
-    $(".shanbay-button").css({
-        "background-color": "#209E85",
-        "color": "white",
-        "float": "right",
-        "margin-left" : "5px"
-    });
-    $("#shanbay-example").css({
-        "width":"300px",
-        "min-height":"25px"
-    });
+    //main popup window
+    $('<div/>').attr("id", "shanbay-popup").appendTo("body");
+
+    //search form
+    $('<form/>',{
+        id:"shanbay-form",
+        action:""
+    }).appendTo($("#shanbay-popup"));
+    $('<input/>',{
+        id:"shanbay-search-box",
+        type:"text",
+        name:"word"
+    }).appendTo($("#shanbay-form"));
+    $('<input/>',{
+        class:"shanbay-input",
+        type:"submit",
+        value:"submit"
+    }).appendTo($("#shanbay-form"));
+
+    //search result display
+    $('<div/>').attr("id", "shanbay-req")
+        .appendTo($("#shanbay-popup"));
+    $('<div/>').addClass("shanbay-menu-wrapper")
+        .appendTo($("#shanbay-req"));
+    $('<ul/>').addClass("shanbay-menu")
+        .appendTo($("#shanbay-req .shanbay-menu-wrapper"));
+    $('<div/>').attr("id", "shanbay-meaning")
+        .appendTo($("#shanbay-req"));
+    $('<div/>').attr("id", "shanbay-en-meaning")
+        .appendTo($("#shanbay-req"));
+    $('<div/>').addClass("shanbay-content")
+        .html(ShanbayStatics["notLogin"])
+        .appendTo($("#shanbay-req .shanbay-menu")).wrap('<li/>');
+    $('<button/>').addClass("shanbay-button")
+        .attr("id", "shanbay-add-word")
+        .appendTo($("#shanbay-req .shanbay-menu")).wrap('<li/>');
+    $('<button/>').addClass("shanbay-button")
+        .html(ShanbayStatics["showEn"])
+        .attr("id", "shanbay-show-en")
+        .appendTo($("#shanbay-req .shanbay-menu")).wrap('<li/>');
+    $('<button/>').addClass("shanbay-button")
+        .html(ShanbayStatics["showExample"])
+        .attr("id", "shanbay-show-example")
+        .appendTo($("#shanbay-req .shanbay-menu")).wrap('<li/>');
+    $('<div>').attr("id", "shanbay-error-log")
+        .html("error log")
+        .appendTo($("#shanbay-popup"));
+
+    //example sentences display
+    $('<div/>').attr("id", "shanbay-example").appendTo($("#shanbay-popup"));
+    $('<div/>').addClass("shanbay-menu-wrapper").appendTo($("#shanbay-example"));
+    $('<ul/>').addClass("shanbay-menu").appendTo($("#shanbay-example .shanbay-menu-wrapper"));
+    $('<div/>').attr("id", "shanbay-example-area").appendTo($("#shanbay-example"));
+    $('<div/>').addClass("shanbay-content")
+        .html(ShanbayStatics["notLogin"]).appendTo($("#shanbay-example .shanbay-menu")).wrap('<li/>');
+    $('<button/>').addClass("shanbay-button").html(ShanbayStatics["goBack"])
+        .attr("id", "shanbay-go-back").appendTo($("#shanbay-example .shanbay-menu")).wrap('<li/>');
+    $('<button/>').addClass("shanbay-button").html(ShanbayStatics["addExample"])
+        .attr("id", "shanbay-add-example").appendTo($("#shanbay-example .shanbay-menu")).wrap('<li/>');
+    $('<div/>').attr("id", "shanbay-new-example").appendTo($("#shanbay-example"));
+    $('<textarea/>').attr("id", "shanbay-example-input").appendTo($("#shanbay-new-example"));
+    $('<button>').addClass("shanbay-button").html(ShanbayStatics["add"])
+        .attr("id", "shanbay-add-example-button")
+        .appendTo($("#shanbay-new-example"));
+    //foot div
+    $('<p/>').attr("id", "shanbay-support").html(ShanbayStatics["foot"]).appendTo($("#shanbay-popup"));
+
 };
 
 //--------------------------------------------
@@ -112,22 +107,24 @@ function change(data){
     var en_def = data.voc.en_definitions;
     var $new_speech;
     var $new_en_def;
-    $("#shanbay-req").css("display","block");
-    $("#shanbay-content").html(data.voc.content);
-    $("#shanbay-definition").html(data.voc.definition);
-    $("#shanbay-en-definitions").html("");// clear <div id="shanbay-en-definitions"> before append
-    $("#shanbay-example").css("display","none");
+    $("#shanbay-req").show();
+    $("#shanbay-req").children().show();
+    $("#shanbay-error-log").hide();
+    $(".shanbay-content").html(data.voc.content);
+    $("#shanbay-meaning").html(data.voc.definition);
+    $("#shanbay-en-meaning").html("");// clear <div id="shanbay-en-meaning"> before append
+    $("#shanbay-example").hide();
     if(data.learning_id != 0){
-        $("#shanbay-add-word").html("\u5df2\u6dfb\u52a0");
+        $("#shanbay-add-word").html(ShanbayStatics["added"]);
     }else{
-        $("#shanbay-add-word").html("\u6dfb\u52a0");
+        $("#shanbay-add-word").html(ShanbayStatics["add"]);
     }
-    $("#shanbay-en-definitions").css("display","none");
+    $("#shanbay-en-meaning").css("display","none");
     //console.log($add_word_button);
     $.each(en_def, function(speech, definitions){
         var speech_id = "shanbay-speech-" + speech;
         $new_speech = $('<div id="' + speech_id + '">' + speech + ":</div>");
-        $new_speech.appendTo("#shanbay-en-definitions");
+        $new_speech.appendTo("#shanbay-en-meaning");
         $.each(definitions, function(i, def){
             $new_en_def = $('<div style="padding-left:10px">' + (i+1) + '. ' + def + '</div>');
             $new_en_def.appendTo($("#"+speech_id));
@@ -136,11 +133,12 @@ function change(data){
 }
 
 function not_found(){
-    $("#shanbay-req").css("display","block");
-    $("#shanbay-example").css("display","none");
-    $("#shanbay-content").html("not found!");
-    $("#shanbay-definition").html("");
-    $("#shanbay-en-definitions").html("");
+    $("#shanbay-req").show();
+    $("#shanbay-example").hide();
+    $("#shanbay-req .shanbay-menu-wrapper").hide();
+    $("#shanbay-error-log").html("Word is not found!").show();
+    $("#shanbay-meaning").html("");
+    $("#shanbay-en-meaning").html("");
 }
 
 
@@ -176,11 +174,11 @@ function save_word(text){
             //console.log(data);
             //console.log(data.id);
             if(data.id != 0){
-                $("#shanbay-add-word").html("\u5df2\u6dfb\u52a0");
+                $("#shanbay-add-word").html(ShanbayStatics["added"]);
                 learning_id = data.id;
             }
             else{
-                $("#shanbay-add-word").html("\u5931\u8d25");
+                $("#shanbay-add-word").html(ShanbayStatics["add"]);
             }
         }
     });
@@ -188,8 +186,10 @@ function save_word(text){
 
 function get_example(text){
     var learning_id;
-    $("#shanbay-req").css("display","none");
-    $("#shanbay-example").css("display","block");
+    $("#shanbay-req").hide();
+    $("#shanbay-example").show();
+    $("#shanbay-new-example").hide();
+    $("#shanbay-example-area").html("");
     $.ajax({
         url:"http://www.shanbay.com/api/word/" + text,
         dataType:"jsonp",
@@ -207,16 +207,16 @@ function get_example(text){
                         $.each(example_instance, function(id, sentence){
                             var example_id = "shanbay-example-" + id;
                             $new_example = $('<div id="' + example_id + '">' + (id+1) + ":</div>");
-                            $new_example.appendTo("#examples-area");
+                            $new_example.appendTo("#shanbay-example-area");
                             var full_sentence = sentence.first + sentence.mid + sentence.last;
                             //console.log(full_sentence);
                             $new_en_sentence = $('<div style="padding-left:10px">' + full_sentence + '</div>');
                             $new_en_sentence.appendTo($("#"+example_id));
                         });
                     }else if(data.examples_status == -1){
-                        $("#shanbay-example").html("You haven't add this word");
+                        $("#shanbay-example-area").html("You haven't add this word");
                     }else if(data.examples_status == 0){
-                        $("#shanbay-example").html("No example sentence");
+                        $("#shanbay-example-area").html("No example sentence");
                     }
                 }
             });
@@ -224,7 +224,47 @@ function get_example(text){
     });
 }
 
-
+function add_example(text) {
+    var learn_id;
+    console.log("in add example")
+    $("#shanbay-new-example").show();
+    $("#shanbay-new-example").children().show();
+    $.ajax({
+        url:"http://www.shanbay.com/api/word/" + text,
+        dataType:"jsonp",
+        success:function(data){
+            console.log(data);
+            learning_id = data.learning_id;
+            /*
+            $.ajax({
+                url:"http://www.shanbay.com/api/learning/examples/" + learning_id,
+                dataType:"jsonp",
+                success:
+                function(data){
+                    //console.log(data);
+                    var example_instance = data.examples;
+                    if(data.examples_status == 1){
+                        //console.log("in");
+                        $.each(example_instance, function(id, sentence){
+                            var example_id = "shanbay-example-" + id;
+                            $new_example = $('<div id="' + example_id + '">' + (id+1) + ":</div>");
+                            $new_example.appendTo("#shanbay-example-area");
+                            var full_sentence = sentence.first + sentence.mid + sentence.last;
+                            //console.log(full_sentence);
+                            $new_en_sentence = $('<div style="padding-left:10px">' + full_sentence + '</div>');
+                            $new_en_sentence.appendTo($("#"+example_id));
+                        });
+                    }else if(data.examples_status == -1){
+                        $("#shanbay-example-area").html("You haven't add this word");
+                    }else if(data.examples_status == 0){
+                        $("#shanbay-example-area").html("No example sentence");
+                    }
+                }
+            });
+            */
+        }
+    });
+}
 
 //--------------------------------------------
 // this function only works on firefox
@@ -251,12 +291,11 @@ $(document).ready(function(){
         if(document.getElementById("shanbay-popup") == null){ 
             add_popup();
         }
-        // TODO: change this to jQuery inplementation
-        var popup = document.getElementById("shanbay-popup");
+        var popup = $("#shanbay-popup");
         var new_text = get_text();
         // condition: 1.select a word.
         //            2.select something different from the formmer time.
-        if(popup.style.display == "none" || (new_text != old_text && new_text != "")){
+        if(popup.css("display") == "none" || (new_text != old_text && new_text != "")){
             old_text = new_text;
             now_text = new_text;
             // change popup's position
@@ -285,16 +324,19 @@ $(document).ready(function(){
                 save_word(now_text);
             });
             $("#shanbay-show-en").unbind("click").click(function(){
-                $("#shanbay-en-definitions").css("display","block");
+                $("#shanbay-en-meaning").css("display","block");
             });
             $("#shanbay-show-example").unbind("click").click(function(){
                 get_example(now_text);
-            })
+            });
+            $("#shanbay-add-example").unbind("click").click(function(){
+                add_example(now_text);
+            });
             $("#shanbay-go-back").unbind("click").click(function(){
                 $("#shanbay-req").css("display","block");
                 $("#shanbay-example").css("display","none");
-                $("#examples-area").html("");
-            })
+                $("#shanbay-example-area").html("");
+            });
         }
         // condition: click outside the popup window
         else{

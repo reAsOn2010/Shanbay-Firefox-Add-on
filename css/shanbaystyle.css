@@ -1,0 +1,112 @@
+/* stylesheet of Shanbay Firefox Add-on
+ * author: The_reAsOn
+ * date: 2012.8.36
+ */
+
+#shanbay-popup {
+    background: rgb(240,240,240);
+    border: 1px solid rgb(0,0,0);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 300px;
+    display: none;
+    text-align: left;
+    font-family: sans-serif;
+    z-index: 1000;
+    border: 2px solid #CCC;
+}
+
+#shanbay-form {
+    width:300px;
+    font-size: 14px;
+    margin: 0px;
+    padding: 2px;
+}
+
+.shanbay-menu-wrapper {
+    width: 300px;
+}
+
+.shanbay-menu {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    width:300px;
+}
+
+.shanbay-menu li{
+    list-style-type: none;
+    float:left;
+}
+
+.shanbay-content {
+    width: auto;
+    color: #CC0099;
+    font-size: 18px;
+    margin: 0px;
+    padding: 2px;
+}
+
+#shanbay-error-log {
+    width: 300px;
+    float: left;
+    display: none;
+}
+
+#shanbay-meaning {
+    width:300px;
+    float: left;
+    font-size: 14px;
+    margin: 0px;
+    padding: 2px;
+    text-align: left;
+    display: none;
+}
+
+#shanbay-en-meaning {
+    display:none;
+    width:300px;
+    float: left;
+    font-size: 14px;
+    margin: 0px;
+    padding: 2px;
+    text-align: left;
+}
+
+#shanbay-example-area {
+    width: 300px;
+    float: left;
+}
+
+
+#shanbay-new-example textarea{
+    width: 290px;
+    float: left;
+}
+
+.shanbay-submenu {
+    width: 300px;
+    float: left;
+}
+
+#shanbay-support {
+    min-width: 300px;
+    font-size: 10px;
+    text-align: right;
+    margin: 0px;
+    color: gray;
+    float: left;
+}
+
+.shanbay-input {
+    background-color: #209E85;
+    color: white;
+}
+
+.shanbay-button {
+    background-color: #209E85;
+    color: white;
+    margin-left : 5px;
+}
+

@@ -18,6 +18,7 @@ String.prototype.trim= function(){
 
 var ShanbayStatics = {
     "notLogin": "\u8BF7\u5148\u767B\u9646\u6247\u8D1D\u7F51",
+    "search": "\u67E5\u8BE2",
     "added": "\u5df2\u6dfb\u52a0",
     "addFail": "\u6DFB\u52A0\u5931\u8d25",
     "add": "\u6DFB\u52A0",
@@ -25,7 +26,14 @@ var ShanbayStatics = {
     "showExample": "\u4f8b\u53e5",
     "goBack": "\u8fd4\u56de",
     "addExample": "\u6DFB\u52A0\u4F8B\u53E5",
-    "foot": "\u6247\u8d1d\u7f51\u652f\u6301"
+    "wordNotFound": "\u62B1\u6B49\uFF0C\u6CA1\u6709\u627E\u5230\u60A8\u6240\u67E5\u8BE2\u7684\u5355\u8BCD",
+    "wordNotContained": "\u4F8B\u53E5\u4E2D\u6CA1\u6709\u5305\u542B\u8BE5\u5355\u8BCD\u6216\u5176\u53D8\u4F53",
+    "wordNotAdded": "\u60A8\u5C1A\u672A\u6DFB\u52A0\u8BE5\u5355\u8BCD",
+    "blank": "\u4F8B\u53E5\u548C\u8BD1\u6587\u4E0D\u80FD\u4E3A\u7A7A",
+    "tooLong": "\u4F8B\u53E5\u53CA\u5176\u8BD1\u6587\u603B\u957F\u4E0D\u5F97\u8D85\u8FC7300\u4E2A\u5B57\u7B26",
+    "success": "\u6DFB\u52A0\u6210\u529F",
+    "cancel": "\u53D6\u6D88",
+    "foot": "\u6247\u8d1d\u7f51\u652f\u6301",
 };
 //--------------------------------------------
 // add elements
@@ -47,7 +55,7 @@ function add_popup(){
     $('<input/>',{
         class:"shanbay-input",
         type:"submit",
-        value:"submit"
+        value:ShanbayStatics["search"]
     }).appendTo($("#shanbay-form"));
 
     //search result display
@@ -75,9 +83,6 @@ function add_popup(){
         .html(ShanbayStatics["showExample"])
         .attr("id", "shanbay-show-example")
         .appendTo($("#shanbay-req .shanbay-menu")).wrap('<li/>');
-    $('<div>').attr("id", "shanbay-error-log")
-        .html("error log")
-        .appendTo($("#shanbay-popup"));
 
     //example sentences display
     $('<div/>').attr("id", "shanbay-example").appendTo($("#shanbay-popup"));
@@ -90,11 +95,55 @@ function add_popup(){
         .attr("id", "shanbay-go-back").appendTo($("#shanbay-example .shanbay-menu")).wrap('<li/>');
     $('<button/>').addClass("shanbay-button").html(ShanbayStatics["addExample"])
         .attr("id", "shanbay-add-example").appendTo($("#shanbay-example .shanbay-menu")).wrap('<li/>');
-    $('<div/>').attr("id", "shanbay-new-example").appendTo($("#shanbay-example"));
-    $('<textarea/>').attr("id", "shanbay-example-input").appendTo($("#shanbay-new-example"));
-    $('<button>').addClass("shanbay-button").html(ShanbayStatics["add"])
-        .attr("id", "shanbay-add-example-button")
+
+    $('<form/>',{
+        id: "shanbay-new-example",
+        action: ""
+    }).appendTo($("#shanbay-example"));
+    $('<textarea/>',{
+        name: "sentence",
+        value: "English sentence"
+    })
+        .focus(function(){
+            if($(this).val() === "English sentence")
+                $(this).val("");
+        })
+        .blur(function(){
+            if($(this).val() === "")
+                $(this).val("English sentence")
+        })
         .appendTo($("#shanbay-new-example"));
+    $('<textarea/>',{
+        name: "translation",
+        value: "Translation"
+    })
+        .focus(function(){
+            if($(this).val() === "Translation")
+                $(this).val("");
+        })
+        .blur(function(){
+            if($(this).val() === "")
+                $(this).val("Translation")
+        })
+        .appendTo($("#shanbay-new-example"));
+    $('<div/>').addClass("shanbay-submenu").appendTo($("#shanbay-new-example"));
+
+    $('<button/>',{
+        id: "shanbay-new-example-submit",
+        class:"shanbay-input",
+    }).html(ShanbayStatics["add"])
+    .appendTo($("#shanbay-new-example .shanbay-submenu"));
+    $('<button/>',{
+        id: "shanbay-new-example-cancel",
+        class: "shanbay-input",
+    }).html(ShanbayStatics["cancel"])
+    .appendTo($("#shanbay-new-example .shanbay-submenu"));
+
+    //error log
+    $('<div>').attr("id", "shanbay-error-log")
+        .html("error log")
+        .appendTo($("#shanbay-popup"));
+
     //foot div
     $('<p/>').attr("id", "shanbay-support").html(ShanbayStatics["foot"]).appendTo($("#shanbay-popup"));
 
@@ -114,7 +163,7 @@ function change(data){
     $("#shanbay-meaning").html(data.voc.definition);
     $("#shanbay-en-meaning").html("");// clear <div id="shanbay-en-meaning"> before append
     $("#shanbay-example").hide();
-    if(data.learning_id != 0){
+    if(data.learning_id !== 0){
         $("#shanbay-add-word").html(ShanbayStatics["added"]);
     }else{
         $("#shanbay-add-word").html(ShanbayStatics["add"]);
@@ -136,14 +185,14 @@ function not_found(){
     $("#shanbay-req").show();
     $("#shanbay-example").hide();
     $("#shanbay-req .shanbay-menu-wrapper").hide();
-    $("#shanbay-error-log").html("Word is not found!").show();
+    $("#shanbay-error-log").html(ShanbayStatics["wordNotFound"]).show();
     $("#shanbay-meaning").html("");
     $("#shanbay-en-meaning").html("");
 }
 
 
 //--------------------------------------------
-// all jsonp functions
+// all json functions
 //--------------------------------------------
 function get_word(text){
     var learning_id;
@@ -151,10 +200,9 @@ function get_word(text){
         url:"http://www.shanbay.com/api/word/" + text,
         dataType:"jsonp",
         success:function(data){
-            if(data.voc != false){
+            if(data.voc !== ""){
                 change(data);
                 learning_id = data.learning_id;
-                //console.log(data);
             }
             else{
                 not_found();
@@ -173,7 +221,7 @@ function save_word(text){
         success:function(data){
             //console.log(data);
             //console.log(data.id);
-            if(data.id != 0){
+            if(data.id !== 0){
                 $("#shanbay-add-word").html(ShanbayStatics["added"]);
                 learning_id = data.id;
             }
@@ -189,7 +237,7 @@ function get_example(text){
     $("#shanbay-req").hide();
     $("#shanbay-example").show();
     $("#shanbay-new-example").hide();
-    $("#shanbay-example-area").html("");
+    $("#shanbay-example-area").html("").show();
     $.ajax({
         url:"http://www.shanbay.com/api/word/" + text,
         dataType:"jsonp",
@@ -202,7 +250,7 @@ function get_example(text){
                 success:function(data){
                     //console.log(data);
                     var example_instance = data.examples;
-                    if(data.examples_status == 1){
+                    if(data.examples_status === 1){
                         //console.log("in");
                         $.each(example_instance, function(id, sentence){
                             var example_id = "shanbay-example-" + id;
@@ -213,9 +261,9 @@ function get_example(text){
                             $new_en_sentence = $('<div style="padding-left:10px">' + full_sentence + '</div>');
                             $new_en_sentence.appendTo($("#"+example_id));
                         });
-                    }else if(data.examples_status == -1){
+                    }else if(data.examples_status === -1){
                         $("#shanbay-example-area").html("You haven't add this word");
-                    }else if(data.examples_status == 0){
+                    }else if(data.examples_status === 0){
                         $("#shanbay-example-area").html("No example sentence");
                     }
                 }
@@ -225,43 +273,47 @@ function get_example(text){
 }
 
 function add_example(text) {
-    var learn_id;
-    console.log("in add example")
-    $("#shanbay-new-example").show();
-    $("#shanbay-new-example").children().show();
+    var learning_id;
+    var query = "";
+    //console.log("in add example");
     $.ajax({
         url:"http://www.shanbay.com/api/word/" + text,
         dataType:"jsonp",
         success:function(data){
-            console.log(data);
+            //console.log(data);
             learning_id = data.learning_id;
-            /*
+            var array = $("#shanbay-new-example").serializeArray();
+            if(array[0].value === "English sentence"){
+                array[0].value = "";
+            }
+            if(array[1].value === "Translation"){
+                array[1].value = ""
+            }
+            var query= $.param(array);
+            console.log(query)
             $.ajax({
-                url:"http://www.shanbay.com/api/learning/examples/" + learning_id,
+                url:"http://www.shanbay.com/api/example/add/" + learning_id + "?" + query,
                 dataType:"jsonp",
-                success:
-                function(data){
-                    //console.log(data);
-                    var example_instance = data.examples;
-                    if(data.examples_status == 1){
-                        //console.log("in");
-                        $.each(example_instance, function(id, sentence){
-                            var example_id = "shanbay-example-" + id;
-                            $new_example = $('<div id="' + example_id + '">' + (id+1) + ":</div>");
-                            $new_example.appendTo("#shanbay-example-area");
-                            var full_sentence = sentence.first + sentence.mid + sentence.last;
-                            //console.log(full_sentence);
-                            $new_en_sentence = $('<div style="padding-left:10px">' + full_sentence + '</div>');
-                            $new_en_sentence.appendTo($("#"+example_id));
-                        });
-                    }else if(data.examples_status == -1){
-                        $("#shanbay-example-area").html("You haven't add this word");
-                    }else if(data.examples_status == 0){
-                        $("#shanbay-example-area").html("No example sentence");
+                success:function(data){
+                    console.log(data.example_status);
+                    if(data.example_status === 100){
+                        $("#shanbay-error-log").html(ShanbayStatics["wordNotContained"]).show("fast").delay(1000).hide("slow");
+                    }
+                    else if(data.example_status === -1){
+                        $("#shanbay-error-log").html(ShanbayStatics["wordNotAdded"]).show("fast").delay(1000).hide("slow");
+                    }
+                    else if(data.example_status === 0){
+                        $("#shanbay-error-log").html(ShanbayStatics["blank"]).show("fast").delay(1000).hide("slow");
+                    }
+                    else if(data.example_status === 300){
+                        $("#shanbay-error-log").html(ShanbayStatics["tooLong"]).show("fast").delay(1000).hide("slow");
+                    }
+                    else if(data.example_status === 1) {
+                        $("#shanbay-error-log").html(ShanbayStatics["success"]).show("fast").delay(1000).hide("slow");
+                        get_example(text);
                     }
                 }
             });
-            */
         }
     });
 }
@@ -288,18 +340,18 @@ $(document).ready(function(){
     $(document).mouseup(function(event){
         event.stopPropagation();
         // if it's the first select, add popup HTML
-        if(document.getElementById("shanbay-popup") == null){ 
+        if(document.getElementById("shanbay-popup") === null){ 
             add_popup();
         }
         var popup = $("#shanbay-popup");
         var new_text = get_text();
         // condition: 1.select a word.
         //            2.select something different from the formmer time.
-        if(popup.css("display") == "none" || (new_text != old_text && new_text != "")){
+        if(popup.css("display") === "none" || (new_text !== old_text && new_text !== "")){
             old_text = new_text;
             now_text = new_text;
             // change popup's position
-            if(new_text != ""){
+            if(new_text !== ""){
                 $("#shanbay-popup").css({
                     top: event.pageY + 15,
                     left: event.pageX
@@ -330,7 +382,19 @@ $(document).ready(function(){
                 get_example(now_text);
             });
             $("#shanbay-add-example").unbind("click").click(function(){
+                $("#shanbay-example-area").fadeOut("fast");
+                $("#shanbay-new-example").show();
+                $("#shanbay-new-example").children().show();
+            });
+            $("#shanbay-new-example-submit").unbind("click").click(function(){
+                //alert("clicked");
                 add_example(now_text);
+                return false;
+            });
+            $("#shanbay-new-example-cancel").unbind("click").click(function(){
+                $("#shanbay-new-example").fadeOut("fast");
+                $("#shanbay-example-area").show();
+                return false;
             });
             $("#shanbay-go-back").unbind("click").click(function(){
                 $("#shanbay-req").css("display","block");

@@ -35,7 +35,7 @@
     width:300px;
 }
 
-li {
+.shanbay-menu li{
     list-style-type: none;
     float:left;
 }
@@ -79,9 +79,15 @@ li {
     float: left;
 }
 
-#shanbay-example-input {
+
+#shanbay-new-example textarea{
     width: 290px;
-    display: none;
+    float: left;
+}
+
+.shanbay-submenu {
+    width: 300px;
+    float: left;
 }
 
 #shanbay-support {
@@ -91,7 +97,6 @@ li {
     margin: 0px;
     color: gray;
     float: left;
-    display: none;
 }
 
 .shanbay-input {

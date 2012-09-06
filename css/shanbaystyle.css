@@ -24,6 +24,18 @@
     padding: 2px;
 }
 
+#shanbay-loading-wrapper {
+    width: 300px;
+}
+
+#shanbay-req {
+    display: none;
+}
+
+#shanbay-example {
+    display: none;
+}
+
 .shanbay-menu-wrapper {
     width: 300px;
 }
@@ -61,7 +73,6 @@
     margin: 0px;
     padding: 2px;
     text-align: left;
-    display: none;
 }
 
 #shanbay-en-meaning {
@@ -74,11 +85,22 @@
     text-align: left;
 }
 
+.shanbay-en-speech {
+    
+}
+
+.shanbay-en-entry {
+    padding-left: 10px;
+}
+
 #shanbay-example-area {
     width: 300px;
     float: left;
 }
 
+#shanbay-new-example {
+    display: none;
+}
 
 #shanbay-new-example textarea{
     width: 290px;
